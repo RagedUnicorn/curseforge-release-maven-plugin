@@ -1,0 +1,33 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>com.ragedunicorn.tools.maven</groupId>
+  <artifactId>test</artifactId>
+  <packaging>jar</packaging>
+  <version>1.0.0</version>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>com.ragedunicorn.tools.maven</groupId>
+        <artifactId>curseforge-release-maven-plugin</artifactId>
+        <version>1.0.0-SNAPSHOT</version>
+        <configuration>
+          <game>wow</game>
+          <projectId>355893</projectId>
+          <displayName>example-upload</displayName>
+          <changelog>release description overwritten by release notes</changelog>
+          <changelogFile>src/main/resources/release-notes-example.md</changelogFile>
+          <changelogType>markdown</changelogType>
+          <gameVersions>
+            <gameVersion>7668</gameVersion>
+            <gameVersion>7350</gameVersion>
+          </gameVersions>
+          <releaseType>release</releaseType>
+          <file>src/main/resources/Example.zip</file>
+          <server>curseforge-token</server>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+</project>
