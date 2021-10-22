@@ -76,10 +76,10 @@ public class CurseForgeReleaseMojo extends AbstractMojo {
   @Parameter(property = "file", required = true)
   private String file;
 
-  // Alternative of using a server configuration. The token can directly be placed in the
+  // Alternative of using a server configuration. The authToken can directly be placed in the
   // plugin configuration
-  @Parameter(property = "token")
-  private String token;
+  @Parameter(property = "authToken")
+  private String authToken;
 
   // References a server configuration in your .m2 settings.xml. This is the preferred way for
   // using the generated curseforge token
@@ -136,9 +136,9 @@ public class CurseForgeReleaseMojo extends AbstractMojo {
     if (settings != null && server != null) {
       final Server serverEntry = settings.getServer(server);
       if (serverEntry != null) {
-        token = serverEntry.getPassphrase();
+        authToken = serverEntry.getPassphrase();
 
-        if (token == null || token.isEmpty()) {
+        if (authToken == null || authToken.isEmpty()) {
           throw new MojoExecutionException("Found server entry in settings.xml "
               + "but authToken parameter was missing or is empty");
         }
@@ -147,12 +147,12 @@ public class CurseForgeReleaseMojo extends AbstractMojo {
       }
     }
     // fallback to plugin configuration if credentials cannot be retrieved from maven settings.xml
-    if (token == null) {
+    if (authToken == null) {
       throw new MojoExecutionException("Unable to read authentication configuration make "
           + "sure to set the authToken property");
     }
 
-    return token;
+    return authToken;
   }
 
   private String getChangelog() throws MojoExecutionException {

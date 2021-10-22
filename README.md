@@ -48,7 +48,7 @@ Setup pom.xml in project
 | game          | false    | wow           | Type of game (currently only wow is supported)                                                                                 |
 | projectId     | true     | <>            | The project id of the curseforge project (can be found on the projects page)                                                   |
 | server        | false    | <>            | References a server configuration in your .m2 settings.xml. This is the preferred way for using the generated curseforge token |
-| token         | false    | <>            | Alternative of using a server configuration. The token can directly be placed in the plugin configuration                      |
+| authToken     | false    | <>            | Alternative of using a server configuration. The authToken can directly be placed in the plugin configuration                  |
 | displayname   | false    | addon         | An optional displayname for the uploaded file                                                                                  |
 | changelog     | false    | <>            | A string containing the changelog                                                                                              |
 | changelogFile | false    | <>            | Optional path to a changelog file - will override changelog                                                                    |
@@ -82,7 +82,20 @@ Once the Api token is generated it can be stored inside the maven `.m2/settings.
 
 Make sure to use `passphrase` instead of `username`and `password` otherwise the plugin will not be able to recognize the token.
 
-It is also possible to set the token with the parameter `token` directly inside the plugin configuration. This is however not recommended because those pom files are usually getting commited into source control and potentially leaking the token.
+It is also possible to set the token with the parameter `authToken` directly inside the plugin configuration. This is however not recommended because those pom files are usually getting commited into source control and potentially leaking the token.
+However, using maven commandline this can be useful being able to overwrite this parameter with the `-D` option.
+
+```xml
+<configuration>
+  ...
+  <token>${curseforge.auth-token}</token>
+</configuration>
+```
+
+Then invoking via the command line
+```
+mvn curseforge-release:curseforge-release -D curseforge.auth-token=[token]
+```
 
 ## Test
 
