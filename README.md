@@ -22,18 +22,19 @@ Setup pom.xml in project
             <id>default-cli</id>
             <configuration>
               <game>wow</game>
-              <projectId>355893</projectId>
+              <projectId>[projectId]</projectId>
               <displayName>example-upload</displayName>
               <changelog>release description overwritten by release notes</changelog>
               <changelogFile>src/main/resources/release-notes-example.md</changelogFile>
               <changelogType>markdown</changelogType>
               <gameVersions>
-                <gameVersion>7668</gameVersion>
-                <gameVersion>7350</gameVersion>
+                <gameVersion>[game-version1]</gameVersion>
+                <gameVersion>[game-version2]</gameVersion>
+                ...
               </gameVersions>
               <releaseType>release</releaseType>
-              <file>src/main/resources/Example.zip</file>
-              <server>curseforge-token</server>
+              <file>[path-to-packaged-addon]</file>
+              <server>[.m2/settings.xml server name]</server>
             </configuration>
           </execution>
         </executions>
@@ -111,8 +112,7 @@ Tests are kept basic because for most of the functionality the CurseForge backen
 
 ##### IntelliJ Run Configurations
 
-The project contains IntelliJ run configurations that can be used for most tasks. Create a folder `runConfigurations` inside the `.idea` folder and copy over all run configurations. 
-
+The project contains IntelliJ run configurations that can be used for most tasks. All configurations can be found in the `.run` folder.
 
 ##### Build Project
 
@@ -148,7 +148,7 @@ If `autoReleaseAfterClose` is set to false in the `nexus-staging-maven-plugin` p
 mvn nexus-staging:release
 ```
 
-Or if the deployment didn't workout you can drop the artifact from the staging repository.
+Or if the deployment didn't work out you can drop the artifact from the staging repository.
 
 ```
 mvn nexus-staging:drop
@@ -177,7 +177,7 @@ clean install
 Executing the plugin from a different folder won't work without also fixing the path to the release notes and any additional assets configured.
 
 **Note:** The example module is deliberately not included as default module otherwise it would execute each time the project is built.
-Instead the module can be considered separate and independent. It is an example of how to use the plugin and it is helpful in testing the plugin during development.
+Instead, the module can be considered separate and independent. It is an example of how to use the plugin, and it is helpful in testing the plugin during development.
 
 
 ##### Checkstyle
