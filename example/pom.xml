@@ -68,7 +68,7 @@
                 <gameVersion>7350</gameVersion>
               </gameVersions>
               <releaseType>release</releaseType>
-              <file>src/main/resources/Example.zip</file>
+              <file>src/main/resources/asset-zip-example.zip</file>
               <server>curseforge-token</server>
             </configuration>
           </execution>
