@@ -88,7 +88,7 @@ However, using maven commandline this can be useful being able to overwrite this
 ```xml
 <configuration>
   ...
-  <token>${curseforge.auth-token}</token>
+  <authToken>${curseforge.auth-token}</authToken>
 </configuration>
 ```
 
