@@ -1,5 +1,7 @@
 # curseforge-release-maven-plugin
 
+![](./docs/curseforge_release_maven_plugin.png)
+
 > A maven plugin for creating Curseforge mods/addons releases
 
 [![Maven Central](https://img.shields.io/maven-central/v/com.ragedunicorn.tools.maven/curseforge-release-maven-plugin.svg?label=Maven%20Central)](https://search.maven.org/search?q=g:%22com.ragedunicorn.tools.maven%22%20AND%20a:%22curseforge-release-maven-plugin%22)
