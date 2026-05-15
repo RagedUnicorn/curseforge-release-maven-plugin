@@ -2,7 +2,7 @@
 
 ![](./docs/curseforge_release_maven_plugin.png)
 
-> A maven plugin for creating Curseforge mods/addons releases
+> A maven plugin for creating CurseForge mods/addons releases
 
 [![Maven Central](https://img.shields.io/maven-central/v/com.ragedunicorn.tools.maven/curseforge-release-maven-plugin.svg?label=Maven%20Central)](https://search.maven.org/search?q=g:%22com.ragedunicorn.tools.maven%22%20AND%20a:%22curseforge-release-maven-plugin%22)
 [![Renovate enabled](docs/renovate-badge.svg)](https://renovatebot.com)
@@ -73,7 +73,7 @@ mvn curseforge-release:curseforge-release
 
 Before the plugin can be used an API token has to be generated.
 
-See Curseforge [documentation](https://authors.curseforge.com/account/api-tokens)
+See CurseForge [documentation](https://authors.curseforge.com/account/api-tokens)
    
 Once the Api token is generated it can be stored inside the maven `.m2/settings.xml`.
  
