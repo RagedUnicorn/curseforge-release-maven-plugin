@@ -180,7 +180,7 @@ mvn pmd:pmd
 
 ## License
 
-Copyright (c) 2022 Michael Wiesendanger
+Copyright (c) 2026 Michael Wiesendanger
 
 Permission is hereby granted, free of charge, to any person obtaining
 a copy of this software and associated documentation files (the
