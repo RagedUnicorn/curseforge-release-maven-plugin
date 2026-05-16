@@ -1,46 +1,93 @@
 package com.ragedunicorn.tools.maven;
 
-import org.apache.maven.plugin.MojoExecutionException;
-import org.junit.Assert;
-import org.junit.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.net.URI;
-import java.util.Arrays;
+import org.apache.maven.plugin.MojoExecutionException;
+import org.junit.jupiter.api.Test;
 
 public class CurseForgeReleaseCurseForgeClientTest {
-  @Test
-  public void testEndpointUriPreparation() {
-    final String ENDPOINT = "/api/projects/:projectId/upload-file";
-    final String projectId = "111111";
-    final String game = "wow";
+  private static final String ENDPOINT = "/api/projects/:projectId/upload-file";
 
+  private CurseForgeClient fullyConfiguredClient() {
     CurseForgeClient client = new CurseForgeClient();
-    client.setProjectId(projectId);
-    client.setGame(game);
+    client.setProjectId("111111");
+    client.setGame("wow");
     client.setToken("test-token");
-
-
-    try {
-      URI preparedUri = client.prepareEndpointUri(ENDPOINT);
-      Assert.assertEquals(preparedUri.toString(), "https://" + game + ".curseforge.com/api/projects/" + projectId + "/upload-file");
-    } catch (MojoExecutionException e) {
-      Assert.fail("MojoExecutionException: " + Arrays.toString(e.getStackTrace()));
-    }
+    return client;
   }
 
-  @Test(expected = IllegalStateException.class)
-  public void testPrepareEndpointUriExpectedInvalidState() {
-    CurseForgeClient client = new CurseForgeClient();
-    try {
-      client.prepareEndpointUri("/some/url");
-    } catch (MojoExecutionException e) {
-      Assert.fail("MojoExecutionException: " + Arrays.toString(e.getStackTrace()));
-    }
+  @Test
+  public void testEndpointUriPreparation() throws MojoExecutionException {
+    CurseForgeClient client = fullyConfiguredClient();
+
+    URI preparedUri = client.prepareEndpointUri(ENDPOINT);
+
+    assertEquals(
+        "https://wow.curseforge.com/api/projects/111111/upload-file",
+        preparedUri.toString());
   }
 
-  @Test(expected = IllegalStateException.class)
-  public void testGetClientUriExpectedInvalidState() {
+  @Test
+  public void testEndpointUriResolvesGamePlaceholderInBaseUri() throws MojoExecutionException {
+    CurseForgeClient client = fullyConfiguredClient();
+    client.setGame("minecraft");
+    client.setBaseUri("https://:game.example.com");
+
+    URI preparedUri = client.prepareEndpointUri(ENDPOINT);
+
+    assertEquals(
+        "https://minecraft.example.com/api/projects/111111/upload-file",
+        preparedUri.toString());
+  }
+
+  @Test
+  public void testPrepareEndpointUriOnEmptyClientThrows() {
     CurseForgeClient client = new CurseForgeClient();
-    client.getHttpClient();
+
+    assertThrows(IllegalStateException.class, () -> client.prepareEndpointUri("/some/url"));
+  }
+
+  @Test
+  public void testGetHttpClientOnEmptyClientThrows() {
+    CurseForgeClient client = new CurseForgeClient();
+
+    assertThrows(IllegalStateException.class, client::getHttpClient);
+  }
+
+  @Test
+  public void testMissingTokenThrows() {
+    CurseForgeClient client = fullyConfiguredClient();
+    client.setToken(null);
+
+    assertThrows(IllegalStateException.class, client::getHttpClient);
+    assertThrows(IllegalStateException.class, () -> client.prepareEndpointUri(ENDPOINT));
+  }
+
+  @Test
+  public void testMissingProjectIdThrows() {
+    CurseForgeClient client = fullyConfiguredClient();
+    client.setProjectId(null);
+
+    assertThrows(IllegalStateException.class, client::getHttpClient);
+    assertThrows(IllegalStateException.class, () -> client.prepareEndpointUri(ENDPOINT));
+  }
+
+  @Test
+  public void testMissingGameThrows() {
+    CurseForgeClient client = fullyConfiguredClient();
+    client.setGame(null);
+
+    assertThrows(IllegalStateException.class, client::getHttpClient);
+    assertThrows(IllegalStateException.class, () -> client.prepareEndpointUri(ENDPOINT));
+  }
+
+  @Test
+  public void testGetHttpClientWithFullyConfiguredClient() {
+    CurseForgeClient client = fullyConfiguredClient();
+
+    assertNotNull(client.getHttpClient());
   }
 }
