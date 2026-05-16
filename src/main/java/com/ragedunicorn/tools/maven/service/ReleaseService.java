@@ -25,7 +25,6 @@ package com.ragedunicorn.tools.maven.service;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.ragedunicorn.tools.maven.CurseForgeClient;
-import com.ragedunicorn.tools.maven.log.DefaultLog;
 import com.ragedunicorn.tools.maven.model.CurseForgeApiClientError;
 import com.ragedunicorn.tools.maven.model.CurseForgeApiRelease;
 import com.ragedunicorn.tools.maven.model.Metadata;
@@ -41,11 +40,13 @@ import org.apache.http.entity.mime.MultipartEntityBuilder;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.util.EntityUtils;
 import org.apache.maven.plugin.MojoExecutionException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class ReleaseService {
   private static final String ENDPOINT = "/api/projects/:projectId/upload-file";
 
-  private final DefaultLog logger = new DefaultLog();
+  private static final Logger LOGGER = LoggerFactory.getLogger(ReleaseService.class);
 
   private final CurseForgeClient curseForgeClient;
 
@@ -77,8 +78,8 @@ public class ReleaseService {
 
     HttpPost httpPost = new HttpPost();
     URI preparedEndpointUrl = curseForgeClient.prepareEndpointUri(ENDPOINT);
-    if (logger.isDebugEnabled()) {
-      logger.debug("Endpoint Uri: " + preparedEndpointUrl.getPath());
+    if (LOGGER.isDebugEnabled()) {
+      LOGGER.debug("Endpoint Uri: {}", preparedEndpointUrl.getPath());
     }
     httpPost.setURI(preparedEndpointUrl);
     httpPost.setEntity(entity);
@@ -87,10 +88,8 @@ public class ReleaseService {
       CloseableHttpResponse response = httpClient.execute(httpPost);
       curseForgeApiRelease = responseHandler(response);
 
-      if (logger.isInfoEnabled()) {
-        logger.info("Upload successful");
-        logger.info("File id: " + curseForgeApiRelease.getId());
-      }
+      LOGGER.info("Upload successful");
+      LOGGER.info("File id: {}", curseForgeApiRelease.getId());
     } catch (IOException e) {
       throw new MojoExecutionException("Upload to CurseForge failed", e);
     }
@@ -121,7 +120,7 @@ public class ReleaseService {
 
     if (statusCode / 100 != 2) {
       CurseForgeApiClientError clientError = gson.fromJson(responseString, CurseForgeApiClientError.class);
-      logger.error(clientError.toString());
+      LOGGER.error("{}", clientError);
 
       throw new MojoExecutionException("Failed to create release - reason: "
           + clientError.getErrorMessage());
