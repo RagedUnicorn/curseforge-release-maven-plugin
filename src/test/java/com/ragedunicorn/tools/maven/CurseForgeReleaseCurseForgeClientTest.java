@@ -20,7 +20,7 @@ public class CurseForgeReleaseCurseForgeClientTest {
   }
 
   @Test
-  public void testEndpointUriPreparation() throws MojoExecutionException {
+  public void prepareEndpointUri_defaultBaseUri_returnsResolvedUri() throws MojoExecutionException {
     CurseForgeClient client = fullyConfiguredClient();
 
     URI preparedUri = client.prepareEndpointUri(ENDPOINT);
@@ -31,7 +31,8 @@ public class CurseForgeReleaseCurseForgeClientTest {
   }
 
   @Test
-  public void testEndpointUriResolvesGamePlaceholderInBaseUri() throws MojoExecutionException {
+  public void prepareEndpointUri_customBaseUriWithGamePlaceholder_resolvesPlaceholder()
+      throws MojoExecutionException {
     CurseForgeClient client = fullyConfiguredClient();
     client.setGame("minecraft");
     client.setBaseUri("https://:game.example.com");
@@ -44,21 +45,21 @@ public class CurseForgeReleaseCurseForgeClientTest {
   }
 
   @Test
-  public void testPrepareEndpointUriOnEmptyClientThrows() {
+  public void prepareEndpointUri_uninitializedClient_throwsIllegalStateException() {
     CurseForgeClient client = new CurseForgeClient();
 
     assertThrows(IllegalStateException.class, () -> client.prepareEndpointUri("/some/url"));
   }
 
   @Test
-  public void testGetHttpClientOnEmptyClientThrows() {
+  public void getHttpClient_uninitializedClient_throwsIllegalStateException() {
     CurseForgeClient client = new CurseForgeClient();
 
     assertThrows(IllegalStateException.class, client::getHttpClient);
   }
 
   @Test
-  public void testMissingTokenThrows() {
+  public void getHttpClient_missingToken_throwsIllegalStateException() {
     CurseForgeClient client = fullyConfiguredClient();
     client.setToken(null);
 
@@ -67,7 +68,7 @@ public class CurseForgeReleaseCurseForgeClientTest {
   }
 
   @Test
-  public void testMissingProjectIdThrows() {
+  public void getHttpClient_missingProjectId_throwsIllegalStateException() {
     CurseForgeClient client = fullyConfiguredClient();
     client.setProjectId(null);
 
@@ -76,7 +77,7 @@ public class CurseForgeReleaseCurseForgeClientTest {
   }
 
   @Test
-  public void testMissingGameThrows() {
+  public void getHttpClient_missingGame_throwsIllegalStateException() {
     CurseForgeClient client = fullyConfiguredClient();
     client.setGame(null);
 
@@ -85,7 +86,7 @@ public class CurseForgeReleaseCurseForgeClientTest {
   }
 
   @Test
-  public void testGetHttpClientWithFullyConfiguredClient() {
+  public void getHttpClient_fullyConfiguredClient_returnsHttpClient() {
     CurseForgeClient client = fullyConfiguredClient();
 
     assertNotNull(client.getHttpClient());
