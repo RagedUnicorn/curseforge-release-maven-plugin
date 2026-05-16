@@ -64,7 +64,6 @@ public class ReleaseService {
    */
   public CurseForgeApiRelease createReleaseOperation(Metadata metadata, String file)
       throws MojoExecutionException {
-    CurseForgeApiRelease curseForgeApiRelease;
     final Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
 
     HttpEntity entity = MultipartEntityBuilder
@@ -84,17 +83,17 @@ public class ReleaseService {
 
     try (CloseableHttpClient httpClient = curseForgeClient.getHttpClient();
          CloseableHttpResponse response = httpClient.execute(httpPost)) {
-      curseForgeApiRelease = responseHandler(response);
+      CurseForgeApiRelease curseForgeApiRelease = responseHandler(response);
 
       if (LOGGER.isInfoEnabled()) {
         LOGGER.info("Upload successful");
         LOGGER.info("File id: {}", curseForgeApiRelease.getId());
       }
+
+      return curseForgeApiRelease;
     } catch (IOException e) {
       throw new MojoExecutionException("Upload to CurseForge failed", e);
     }
-
-    return curseForgeApiRelease;
   }
 
   /**
