@@ -74,8 +74,6 @@ public class ReleaseService {
             metadata.getDisplayName())
         .build();
 
-    CloseableHttpClient httpClient = curseForgeClient.getHttpClient();
-
     HttpPost httpPost = new HttpPost();
     URI preparedEndpointUrl = curseForgeClient.prepareEndpointUri(ENDPOINT);
     if (LOGGER.isDebugEnabled()) {
@@ -84,20 +82,16 @@ public class ReleaseService {
     httpPost.setURI(preparedEndpointUrl);
     httpPost.setEntity(entity);
 
-    try {
-      CloseableHttpResponse response = httpClient.execute(httpPost);
+    try (CloseableHttpClient httpClient = curseForgeClient.getHttpClient();
+         CloseableHttpResponse response = httpClient.execute(httpPost)) {
       curseForgeApiRelease = responseHandler(response);
 
-      LOGGER.info("Upload successful");
-      LOGGER.info("File id: {}", curseForgeApiRelease.getId());
+      if (LOGGER.isInfoEnabled()) {
+        LOGGER.info("Upload successful");
+        LOGGER.info("File id: {}", curseForgeApiRelease.getId());
+      }
     } catch (IOException e) {
       throw new MojoExecutionException("Upload to CurseForge failed", e);
-    }
-
-    try {
-      httpClient.close();
-    } catch (IOException e) {
-      throw new MojoExecutionException("Failed to close http client", e);
     }
 
     return curseForgeApiRelease;
