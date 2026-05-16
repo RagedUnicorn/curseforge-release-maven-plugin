@@ -1,12 +1,13 @@
 # Release
 
-> This document explains how a new release is created for curseforge-execute-maven-plugin
+> This document explains how a new release is created for curseforge-release-maven-plugin
 
 * Remove snapshot from version for plugin and example then commit
 * Update `src/main/resources/release-notes.md` with changes
 * Invoke GitHub Action `GitHub Release`
 * Invoke GitHub Action `GitHub Package Release`
   * This can also be used to deploy snapshot versions
-* Invoke GitHub Action `OSSRH Package Release`
+* Invoke GitHub Action `Maven Central Package Release`
   * This can also be used to deploy snapshot versions
+  * After the workflow finishes, the deployment sits in *Validated* state at https://central.sonatype.com/publishing/deployments and must be **Published manually**
 * Increase project version and add SNAPSHOT for plugin and example then commit (after a release the version should always be a snapshot version)
