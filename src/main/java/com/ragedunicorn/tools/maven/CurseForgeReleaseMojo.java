@@ -44,6 +44,10 @@ public class CurseForgeReleaseMojo extends AbstractMojo {
   @Parameter(property = "game", defaultValue = "wow")
   private String game;
 
+  // CurseForge baseUri - overridable for testing against a local stub
+  @Parameter(property = "baseUri", required = false)
+  private String baseUri;
+
   // The project id of the curseforge project (can be found on the projects page)
   @Parameter(property = "projectId", required = true)
   private String projectId;
@@ -206,6 +210,12 @@ public class CurseForgeReleaseMojo extends AbstractMojo {
    */
   private CurseForgeClient createCurseForgeClient() throws MojoExecutionException {
     CurseForgeClient curseForgeClient = new CurseForgeClient();
+    if (baseUri != null) {
+      if (baseUri.endsWith("/")) {
+        baseUri = baseUri.substring(0, baseUri.length() - 1);
+      }
+      curseForgeClient.setBaseUri(baseUri);
+    }
     curseForgeClient.setToken(getCredentials());
     curseForgeClient.setGame(game);
     curseForgeClient.setProjectId(projectId);

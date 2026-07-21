@@ -47,20 +47,21 @@ Setup pom.xml in project
   [...]
 </project>
 ```
-| Parameter     | Required | Default Value | Description                                                                                                                    |
-|---------------|----------|---------------|--------------------------------------------------------------------------------------------------------------------------------|
-| game          | false    | wow           | Type of game (currently only wow is supported)                                                                                 |
-| projectId     | true     | <>            | The project id of the curseforge project (can be found on the projects page)                                                   |
-| server        | false    | <>            | References a server configuration in your .m2 settings.xml. This is the preferred way for using the generated curseforge token |
-| authToken     | false    | <>            | Alternative of using a server configuration. The authToken can directly be placed in the plugin configuration                  |
-| displayname   | false    | addon         | An optional displayname for the uploaded file                                                                                  |
-| changelog     | false    | <>            | A string containing the changelog                                                                                              |
-| changelogFile | false    | <>            | Optional path to a changelog file - will override changelog                                                                    |
-| changelogType | false    | text          | Changelog type ["text", "html", "markdown"]                                                                                    |
-| gameVersions  | true     | <>            | A list of supported game versions                                                                                              |
-| releaseType   | false    | release       | One of "alpha", "beta", "release"                                                                                              |
-| file          | true     | <>            | The path to the addon to upload                                                                                                |
 
+| Parameter     | Required | Default Value                | Description                                                                                                                    |
+|---------------|----------|------------------------------|--------------------------------------------------------------------------------------------------------------------------------|
+| game          | false    | wow                          | Type of game (currently only wow is supported)                                                                                 |
+| baseUri       | false    | https://:game.curseforge.com | The API endpoint - generally only used for testing against a stub server                                                       |
+| projectId     | true     | <>                           | The project id of the curseforge project (can be found on the projects page)                                                   |
+| server        | false    | <>                           | References a server configuration in your .m2 settings.xml. This is the preferred way for using the generated curseforge token |
+| authToken     | false    | <>                           | Alternative of using a server configuration. The authToken can directly be placed in the plugin configuration                  |
+| displayname   | false    | addon                        | An optional displayname for the uploaded file                                                                                  |
+| changelog     | false    | <>                           | A string containing the changelog                                                                                              |
+| changelogFile | false    | <>                           | Optional path to a changelog file - will override changelog                                                                    |
+| changelogType | false    | text                         | Changelog type ["text", "html", "markdown"]                                                                                    |
+| gameVersions  | true     | <>                           | A list of supported game versions                                                                                              |
+| releaseType   | false    | release                      | One of "alpha", "beta", "release"                                                                                              |
+| file          | true     | <>                           | The path to the addon to upload                                                                                                |
 
 ### Execute Plugin
 

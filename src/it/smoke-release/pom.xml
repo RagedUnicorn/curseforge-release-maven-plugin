@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>com.ragedunicorn.tools.maven.it</groupId>
+  <artifactId>smoke-release</artifactId>
+  <version>1.0.0</version>
+  <packaging>pom</packaging>
+
+  <description>
+    Executes the curseforge-release goal against a closed loopback port. The goal must survive
+    HTTP client construction - the point where provided-transitive classes missing from the
+    plugin's runtime ClassRealm surface as NoClassDefFoundError - and may only fail afterwards,
+    at the network call. verify.groovy asserts exactly that.
+  </description>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>com.ragedunicorn.tools.maven</groupId>
+        <artifactId>curseforge-release-maven-plugin</artifactId>
+        <version>@project.version@</version>
+        <configuration>
+          <game>wow</game>
+          <projectId>355893</projectId>
+          <displayName>smoke-release</displayName>
+          <changelogFile>changelog.md</changelogFile>
+          <changelogType>markdown</changelogType>
+          <gameVersions>
+            <gameVersion>7668</gameVersion>
+          </gameVersions>
+          <releaseType>release</releaseType>
+          <file>dummy-asset.zip</file>
+          <authToken>smoke-test-token</authToken>
+          <!-- closed loopback port: refuses the connection without any real CurseForge call -->
+          <baseUri>http://127.0.0.1:1</baseUri>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+</project>
