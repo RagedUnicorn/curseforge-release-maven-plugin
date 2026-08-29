@@ -1,6 +1,6 @@
 # curseforge-release-maven-plugin
 
-![](./docs/curseforge_release_maven_plugin.png)
+![](./docs/curseforge_release_maven_plugin_banner.svg)
 
 > A maven plugin for creating CurseForge mods/addons releases
 
